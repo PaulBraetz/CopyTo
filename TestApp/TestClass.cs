@@ -1,4 +1,6 @@
-﻿using RhoMicro.CopyToGenerator;
+﻿namespace TestApp.MyNS;
+
+using RhoMicro.CopyToGenerator;
 
 [GenerateCopyTo]
 public partial class TestClass

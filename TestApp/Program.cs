@@ -1,4 +1,6 @@
-﻿Console.WriteLine("Hello, World!");
+﻿using TestApp.MyNS;
+
+Console.WriteLine("Hello, World!");
 
 var i1 = new TestClass() { TestProp = "Val 1" };
 var i2 = new TestClass();

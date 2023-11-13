@@ -22,7 +22,7 @@
 		</Description>
 		<Copyright>2023</Copyright>
 		<PackageTags>Source Generator</PackageTags>
-		<Version>1.0.2</Version>
+		<Version>1.0.4</Version>
 		<PackageId>RhoMicro.CopyToGenerator</PackageId>
 		<Company>RhoMicro</Company>
 		<PackageProjectUrl>https://github.com/PaulBraetz/CopyToGenerator/</PackageProjectUrl>
@@ -30,7 +30,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<AssemblyName>$(MSBuildProjectName).10</AssemblyName>
+		<AssemblyName>$(MSBuildProjectName).34</AssemblyName>
 		<RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 	</PropertyGroup>
 
@@ -49,4 +49,14 @@
 		<PackageReference Update="NETStandard.Library" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.0.1" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="bin\Debug\netstandard2.0\\RhoMicro.CopyToGenerator.10.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	</ItemGroup>
+
+	<!--AutoUpdateAssemblyName-->
 </Project>

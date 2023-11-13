@@ -67,8 +67,9 @@ internal sealed class GenerateCopyToAttribute : global::System.Attribute {}
 
                 if(!c.Symbol.ContainingNamespace.IsGlobalNamespace)
                 {
-                    _ = classSourceBuilder.Append("namespace ").Append(c.Symbol.ContainingNamespace.Name)
-                    .Append('{');
+                    _ = classSourceBuilder.Append("namespace ")
+                        .Append(c.Symbol.ContainingNamespace.ToDisplayString())
+                        .Append('{');
                 }
 
                 _ = classSourceBuilder
