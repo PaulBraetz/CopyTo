@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<developmentDependency>true</developmentDependency>
+		<NoPackageAnalysis>true</NoPackageAnalysis>
+		<IsRoslynComponent>true</IsRoslynComponent>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>All</AnalysisMode>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<LangVersion>latest</LangVersion>
+		<Nullable>disable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>Paul Brätz</Authors>
+		<Description>
+			Generate a `CopyTo` method for copying one instances property values to another.
+		</Description>
+		<Copyright>2023</Copyright>
+		<PackageTags>Source Generator</PackageTags>
+		<Version>1.0.2</Version>
+		<PackageId>RhoMicro.CopyToGenerator</PackageId>
+		<Company>RhoMicro</Company>
+		<PackageProjectUrl>https://github.com/PaulBraetz/CopyToGenerator/</PackageProjectUrl>
+		<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AssemblyName>$(MSBuildProjectName).10</AssemblyName>
+		<RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<WarningsAsErrors>$(WarningsAsErrors);NU1605;1591;1573;1712;nullable</WarningsAsErrors>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<WarningsAsErrors>$(WarningsAsErrors);NU1605;1591;1573;1712;nullable</WarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove=".editorconfig"></None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="NETStandard.Library" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.0.1" />
+	</ItemGroup>
+</Project>
