@@ -7,6 +7,9 @@ This source code generator for C# generates a `CopyTo` method for copying the co
 Annotate your type with the `GenerateCopyTo` Attribute found in the `RhoMicro.CopyToGenerator` namespace:
 
 ```cs
+using RhoMicro.GenerateCopyToGenerator;
+
+[GenerateCopyTo]
 partial class MyType
 {
     public String Prop1 { get; set; }
@@ -25,3 +28,9 @@ partial class MyType
     }
 }
 ```
+
+## Features And Restrictions
+
+The generator is able to copy:
+- other copyable types
+- 

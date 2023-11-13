@@ -12,8 +12,8 @@ using System.Text;
 [Generator]
 public class CopyToGenerator : IIncrementalGenerator
 {
-    private const String _attributeName = "GenerateCopyToAttribute";
-    private const String _attributeNamespace = "RhoMicro.CopyToGenerator";
+    public const String AttributeName = "GenerateCopyToAttribute";
+    public const String AttributeNamespace = "RhoMicro.CopyToGenerator";
     private const String _attributeSource =
 """
 namespace RhoMicro.CopyToGenerator;
@@ -30,9 +30,7 @@ internal sealed class GenerateCopyToAttribute : global::System.Attribute {}
             {
                 var symbol = c.SemanticModel.GetDeclaredSymbol(c.Node) as ITypeSymbol;
 
-                var isMarked = symbol.GetAttributes().Any(a =>
-                    a.AttributeClass.Name == _attributeName &&
-                    a.AttributeClass.ContainingNamespace.ToDisplayString() == _attributeNamespace) &&
+                var isMarked = symbol.IsMarked() &&
                     (c.Node as ClassDeclarationSyntax).Modifiers.Any(SyntaxKind.PartialKeyword);
 
                 return (IsMarked: isMarked, Symbol: symbol);
@@ -51,9 +49,9 @@ internal sealed class GenerateCopyToAttribute : global::System.Attribute {}
 
                 var methodSourceBuilder = new StringBuilder()
                     .Append("public void CopyTo(")
-                    .Append(symbol.Name).Append(" target){");
+                    .Append(symbol.Name).Append(" target){if(this == target){ return;}");
 
-                var methodSource = props.Select(p => $"target.{p.Name} = {p.Name};")
+                var methodSource = props.Select(GetCopyStatement)
                     .Aggregate(methodSourceBuilder, (b, a) => b.Append(a))
                     .Append('}')
                     .ToString();
@@ -95,6 +93,23 @@ internal sealed class GenerateCopyToAttribute : global::System.Attribute {}
             });
 
         context.RegisterSourceOutput(provider, (c, output) => c.AddSource(output.HintName, output.Source));
-        context.RegisterPostInitializationOutput(c => c.AddSource(_attributeName, _attributeSource));
+        context.RegisterPostInitializationOutput(c => c.AddSource(AttributeName, _attributeSource));
+    }
+
+    private static String GetCopyStatement(IPropertySymbol p)
+    {
+        var result = p.Type.TryGetIEnumerableItemType(out var itemType) ?
+            $"if(target.{p.Name} == default || {p.Name} == default)" +
+            $"{{target.{p.Name} = {p.Name};}} " +
+            $"else" +
+            $"{{var targetElements = new global::System.Collections.Generic.HashSet<{itemType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>(target.{p.Name});" +
+            $"var copyPairs = {p.Name}.Select(targetValue => (Success: targetElements.TryGetValue(targetValue, out var thisValue), TargetValue: targetValue, ThisValue: thisValue)).Where(t => t.ThisValue != null);" +
+            $"foreach(var (_, thisValue, targetValue) in copyPairs)" +
+            $"{{thisValue.CopyTo(targetValue);}}}}" :
+            p.Type.IsMarked() ?
+            $"if(target.{p.Name} == null || {p.Name}==null){{target.{p.Name} = {p.Name};}}else{{{p.Name}.CopyTo(target.{p.Name});}}" :
+            $"target.{p.Name} = {p.Name};";
+
+        return result;
     }
 }

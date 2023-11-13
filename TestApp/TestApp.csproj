@@ -9,11 +9,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="RhoMicro.CopyToGenerator" Version="1.0.4">
+		<!--<PackageReference Include="RhoMicro.CopyToGenerator" Version="1.0.4">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<!--<ProjectReference Include="..\RhoMicro.CopyToGenerator\RhoMicro.CopyToGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />-->
+		</PackageReference>-->
+		<ProjectReference Include="..\RhoMicro.CopyToGenerator\RhoMicro.CopyToGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 </Project>
